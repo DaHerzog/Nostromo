@@ -31,4 +31,4 @@
 #exclude the xcodeproj directory
 
 *.xcodeproj
-/.xcodeproj
+/Nostromo.xcodeproj
