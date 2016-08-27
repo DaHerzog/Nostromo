@@ -7,6 +7,7 @@ Dank unterschiedlicher Entwicklungssysteme müssen je nach Betriebssystem unters
 Folgende Dateien sind betroffen:
 
 rgbimage.cpp / -.hpp
+
 ShaderProgram.cpp / -.hpp
 
 Grund: Verwendung der Windows.h Datei unter OS X logischerweise nicht möglich ;)
