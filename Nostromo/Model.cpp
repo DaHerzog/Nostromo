@@ -93,7 +93,10 @@ bool Model::load( const char* Filename, const char* VertexShader, const char* Fr
 	*/
 
 	m_ShaderProgram = ShaderProgram();
+    
+    //old
 	//m_ShaderProgram.load(true,true,VertexShader,FragmentShader);
+    
     m_ShaderProgram.load(VertexShader,FragmentShader);
 	m_ShaderProgram.compile(&compileErrors);
 	createModel(Filename);

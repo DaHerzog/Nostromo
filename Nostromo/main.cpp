@@ -31,6 +31,11 @@ const char* g_Shader_fragment_alpha = "Shader//Pixelshader_red.glsl";
 const char* g_Shader_vertex_beta = "Shader//Vertexshader_blue.glsl";
 const char* g_Shader_fragment_beta = "Shader//Pixelshader_blue.glsl";
 
+//Pfade für Mac OS X
+const char* g_shader_mac_vertex = "VertexShader_beispiel.glsl";
+const char* g_shader_mac_fragment = "FragmentShader_beispiel.glsl";
+
+
 
 // window x and y size
 const unsigned int g_WindowWidth=1024;
@@ -88,7 +93,7 @@ int main(int argc, char * argv[]) {
 	//g_Model.applyMaterial("E://ComputerGrafik//PraktikumProjekte//praktikum_3//Computergrafik//models//sibenik//sibenik.mtl");
 
 
-    g_ship.load(g_Object_ship, g_LocalPos, g_Shader_vertex_alpha, g_Shader_fragment_alpha);
+    g_ship.load(g_Object_ship, g_LocalPos, g_shader_vertex, g_shader_fragment);
 	g_ship.setCamera(&g_Camera);
 
 	g_Model_obstacle.load(g_obstacle_width, g_obstacle_height, g_LocalPos);
