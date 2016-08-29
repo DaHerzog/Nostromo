@@ -71,11 +71,23 @@ void Spacecraft::update_Movement(float DeltaTime, bool buttonPressed_leftRight, 
 
 	
 	if (((location.X > g_border_right && movement_leftRight == 1) || (location.X < g_border_left && movement_leftRight == -1)) && g_movement_factor_leftRight > 0.0f) {
-		g_movement_factor_leftRight -= 2.0f;
+		g_movement_factor_leftRight -= 4.0f;
+        if (location.X > g_border_right) {
+            location.X = g_border_right;
+        }
+        if (location.X < g_border_left) {
+            location.X = g_border_left;
+        }
 	}
 
 	if (((location.Y > g_border_top && movement_upDown == 1) || (location.Y < g_border_bottom && movement_upDown == -1)) && g_movement_factor_upDown > 0.0f ) {
-		g_movement_factor_upDown -= 2.0f;
+		g_movement_factor_upDown -= 4.0f;
+        if (location.Y > g_border_top) {
+            location.Y = g_border_top;
+        }
+        if (location.Y < g_border_bottom) {
+            location.Y = g_border_bottom;
+        }
 	}
 	
 

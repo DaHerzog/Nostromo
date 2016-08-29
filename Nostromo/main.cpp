@@ -97,7 +97,7 @@ int main(int argc, char * argv[]) {
     g_ship.load(g_object_ship_mac, g_LocalPos, g_shader_mac_vertex, g_shader_mac_fragment);
 	g_ship.setCamera(&g_Camera);
 
-	g_Model_obstacle.load(g_obstacle_width, g_obstacle_height, g_LocalPos);
+	//g_Model_obstacle.load(g_obstacle_width, g_obstacle_height, g_LocalPos);
     
     glutMainLoop();
 }
@@ -144,14 +144,14 @@ void DrawGroundGrid() {
 
 void MouseCallback(int Button, int State, int x, int y) {
 
-    g_MouseButton = Button;
+    /*g_MouseButton = Button;
     g_MouseState = State;
-    g_Camera.mouseInput(x,y,Button,State);
+    g_Camera.mouseInput(x,y,Button,State);*/
 }
 
 void MouseMoveCallback( int x, int y) {
 
-    g_Camera.mouseInput(x,y,g_MouseButton,g_MouseState);
+    //g_Camera.mouseInput(x,y,g_MouseButton,g_MouseState);
 }
 
 void KeyboardCallback( unsigned char key, int x, int y) {

@@ -63,11 +63,11 @@ private:
 
 	float g_movement_factor_leftRight = 0.0f;
 	float g_movement_factor_upDown = 0.0f;
-	float g_movement_accelerator = 60000.0f;
-	float g_movement_speedBorder = 300.0f;
+	float g_movement_accelerator = 5000.0f;
+	float g_movement_speedBorder = 1000.0f;
 
 	float g_border_left = -4.0f;
 	float g_border_right = 4.0f;
-	float g_border_bottom = -2.0f;
-	float g_border_top = 2.0f;
+	float g_border_bottom = -4.0f;
+	float g_border_top = 4.0f;
 };
