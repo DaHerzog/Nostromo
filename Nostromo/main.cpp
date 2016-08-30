@@ -33,9 +33,12 @@ const char* g_Shader_vertex_beta = "Shader//Vertexshader_blue.glsl";
 const char* g_Shader_fragment_beta = "Shader//Pixelshader_blue.glsl";
 
 //Pfade für Mac OS X
-const char* g_shader_mac_vertex = "/Users/davidherzog/Documents/XCode/Nostromo/Nostromo/Vertexshader_red.glsl";
-const char* g_shader_mac_fragment = "/Users/davidherzog/Documents/XCode/Nostromo/Nostromo/Pixelshader_red.glsl";
+const char* g_shader_mac_vertex_red = "/Users/davidherzog/Documents/XCode/Nostromo/Nostromo/Vertexshader_red.glsl";
+const char* g_shader_mac_fragment_red = "/Users/davidherzog/Documents/XCode/Nostromo/Nostromo/Pixelshader_red.glsl";
 const char* g_object_ship_mac = "/Users/davidherzog/Documents/XCode/Nostromo/Nostromo/spaceship_own.obj";
+const char* g_myTerrain_mac = "/Users/davidherzog/Documents/XCode/Nostromo/Nostromo/myTerrain.obj";
+const char* g_shader_mac_vertex_blue = "/Users/davidherzog/Documents/XCode/Nostromo/Nostromo/Vertexshader_blue.glsl";
+const char* g_shader_mac_fragment_blue = "/Users/davidherzog/Documents/XCode/Nostromo/Nostromo/Pixelshader_blue.glsl";
 
 
 
@@ -52,6 +55,7 @@ Camera g_Camera;
 Spacecraft g_ship;
 Obstacle g_Model_obstacle;
 GameManager g_GameManager;
+Model g_myTerrainTest;
 
 int g_MouseButton = 0;
 int g_MouseState = 0;
@@ -101,7 +105,8 @@ int main(int argc, char * argv[]) {
 	//g_Model.applyMaterial("E://ComputerGrafik//PraktikumProjekte//praktikum_3//Computergrafik//models//sibenik//sibenik.mtl");
 
 
-    g_ship.load(g_object_ship_mac, g_LocalPos, g_shader_mac_vertex, g_shader_mac_fragment);
+    g_ship.load(g_object_ship_mac, g_LocalPos, g_shader_mac_vertex_red, g_shader_mac_fragment_red);
+    g_myTerrainTest.load(g_myTerrain_mac, g_shader_mac_vertex_blue, g_shader_mac_fragment_blue);
 	g_ship.setCamera(&g_Camera);
     g_GameManager.setShip(&g_ship);
     g_GameManager.setCamera(&g_Camera);
@@ -153,14 +158,14 @@ void DrawGroundGrid() {
 
 void MouseCallback(int Button, int State, int x, int y) {
 
-    /*g_MouseButton = Button;
+    g_MouseButton = Button;
     g_MouseState = State;
-    g_Camera.mouseInput(x,y,Button,State);*/
+    g_Camera.mouseInput(x,y,Button,State);
 }
 
 void MouseMoveCallback( int x, int y) {
 
-    //g_Camera.mouseInput(x,y,g_MouseButton,g_MouseState);
+    g_Camera.mouseInput(x,y,g_MouseButton,g_MouseState);
 }
 
 void KeyboardCallback( unsigned char key, int x, int y) {
@@ -248,6 +253,7 @@ void DrawScene() {
     
     g_GameManager.drawAll();
     DrawGroundGrid();
+    g_myTerrainTest.drawTriangles();
     
     glutSwapBuffers();
     glutPostRedisplay();
