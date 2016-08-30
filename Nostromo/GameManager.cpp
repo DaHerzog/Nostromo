@@ -13,7 +13,10 @@ GameManager::GameManager() {
     this->Movement_leftright = 0;
     this->Movement_updown = 0;
     this->buttonPressed_leftRight = false;
-    this->buttonPressed_upDown = false;;
+    this->buttonPressed_upDown = false;
+    
+    //groeßer = langsamer
+    this->paralaxSpeed = 300.0f;
 }
 
 void GameManager::drawAll() {
@@ -24,9 +27,11 @@ void GameManager::drawAll() {
     
     this->g_ship->update_Movement(Movement_elapsedTime - Movement_prevTime, this->buttonPressed_leftRight, this->buttonPressed_upDown);
     this->g_ship->update_Camera(Movement_elapsedTime - Movement_prevTime, this->buttonPressed_leftRight, this->buttonPressed_upDown);
+    this->g_terrain->parallax(Movement_elapsedTime - Movement_prevTime, this->paralaxSpeed);
     
     this->Movement_prevTime = Movement_elapsedTime;
     
+    this->g_terrain->draw();
     this->g_ship->draw();
 }
 
@@ -48,6 +53,10 @@ void GameManager::setCamera(Camera *pCamera) {
 
 Camera& GameManager::getCamera() {
     return *(this->g_Camera);
+}
+
+void GameManager::setTerrain(MyTerrain *pTerrain) {
+    this->g_terrain = pTerrain;
 }
 
 void GameManager::setMovementUpDown(int pMov) {

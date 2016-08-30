@@ -12,6 +12,7 @@
 #include <stdio.h>
 
 #include "Spacecraft.h"
+#include "MyTerrain.hpp"
 
 class GameManager {
     
@@ -25,6 +26,7 @@ public:
     Spacecraft& getShip();
     void setCamera(Camera *pCamera);
     Camera& getCamera();
+    void setTerrain(MyTerrain *pTerrain);
     void setMovementUpDown(int pMov);
     int getMovementUpDown();
     void setMovementLeftRight(int pMov);
@@ -37,6 +39,7 @@ public:
 private:
     Spacecraft* g_ship;
     Camera* g_Camera;
+    MyTerrain* g_terrain;
     
     int Movement_elapsedTime;
     int Movement_prevTime;
@@ -44,6 +47,7 @@ private:
     int Movement_updown;
     bool buttonPressed_leftRight;
     bool buttonPressed_upDown;
+    float paralaxSpeed;
 };
 
 #endif /* GameManager_hpp */

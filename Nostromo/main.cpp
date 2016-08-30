@@ -55,7 +55,7 @@ Camera g_Camera;
 Spacecraft g_ship;
 Obstacle g_Model_obstacle;
 GameManager g_GameManager;
-Model g_myTerrainTest;
+MyTerrain g_myTerrainTest;
 
 int g_MouseButton = 0;
 int g_MouseState = 0;
@@ -106,10 +106,11 @@ int main(int argc, char * argv[]) {
 
 
     g_ship.load(g_object_ship_mac, g_LocalPos, g_shader_mac_vertex_red, g_shader_mac_fragment_red);
-    g_myTerrainTest.load(g_myTerrain_mac, g_shader_mac_vertex_blue, g_shader_mac_fragment_blue);
+    g_myTerrainTest.load(g_myTerrain_mac, g_LocalPos, g_shader_mac_vertex_blue, g_shader_mac_fragment_blue);
 	g_ship.setCamera(&g_Camera);
     g_GameManager.setShip(&g_ship);
     g_GameManager.setCamera(&g_Camera);
+    g_GameManager.setTerrain(&g_myTerrainTest);
 
 	//g_Model_obstacle.load(g_obstacle_width, g_obstacle_height, g_LocalPos);
     
@@ -253,7 +254,7 @@ void DrawScene() {
     
     g_GameManager.drawAll();
     DrawGroundGrid();
-    g_myTerrainTest.drawTriangles();
+    
     
     glutSwapBuffers();
     glutPostRedisplay();
