@@ -14,6 +14,7 @@
 #include <map>
 #include <float.h>
 
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 Vertex::Vertex() {}
 
@@ -343,6 +344,24 @@ void Model::createModel(const char* Filename) {
 	Vector min = Vector(minX, minY, minZ) * faktor;
 	Vector max = Vector(maxX, maxY, maxZ) * faktor;
 	m_Box = BoundingBox(min, max);
+    
+    m_pIndices = new unsigned int[MyFacesFromFile.size()*3];
+    
+    //Funktioniert nur, da die Vertices durch die Faces vorsortiert im Array liegen!
+    for(int i=0; i < m_VertexCount; i++) {
+        m_pIndices[i] = i;
+        
+    }
+    
+    
+    
+    glGenBuffers( 1, &m_VertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*faceCount*3, m_pVertices, GL_STATIC_DRAW );
+    
+    glGenBuffers( 1, &m_IndexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*MyFacesFromFile.size()*3, m_pIndices, GL_STATIC_DRAW);
 
 }
 
@@ -585,7 +604,7 @@ void Model::drawTriangles() const
 		}
 
 
-		glBegin(GL_TRIANGLES);
+		/*glBegin(GL_TRIANGLES);
 		while (vertexCounter_all < vertexCounter_group) {
 			i = vertexCounter_all;
 
@@ -604,7 +623,25 @@ void Model::drawTriangles() const
 			vertexCounter_all += 3;
 
 		}
-		glEnd();
+		glEnd();*/
+        
+        //GL indices werden benötigt....
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+        
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
+        
+        glVertexPointer( 3, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(0));
+        glNormalPointer( GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(12));
+        
+        glDrawElements( GL_TRIANGLES, vertexCounter_group , GL_UNSIGNED_INT, BUFFER_OFFSET(0) );
+        
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_NORMAL_ARRAY);
+        
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 		//vertexCounter_all += vertexCounter_group;
 	}

@@ -78,7 +78,7 @@ int main(int argc, char * argv[]) {
     glutInitWindowSize(g_WindowWidth, g_WindowHeight);
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-    glutCreateWindow("CG Praktikum");
+    glutCreateWindow("Nostromo");
 #ifdef WIN32
 	glewInit();
 #endif

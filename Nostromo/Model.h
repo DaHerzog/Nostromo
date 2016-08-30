@@ -67,11 +67,14 @@ protected:
     Material* m_pMaterials;
     unsigned int m_MaterialCount;
     Vertex* m_pVertices;
+    unsigned int* m_pIndices;
     unsigned int m_VertexCount;
 	TextureGroup* m_tGroups;
 	unsigned int m_TextureGroupCount;
     BoundingBox m_Box;
 	ShaderProgram m_ShaderProgram;
+    GLuint m_VertexBuffer;
+    GLuint m_IndexBuffer;
 
 };
 
