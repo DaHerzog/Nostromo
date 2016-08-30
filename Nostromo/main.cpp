@@ -17,6 +17,7 @@
 #include "ShaderProgram.hpp"
 #include "Spacecraft.h"
 #include "Obstacle.h"
+#include "GameManager.hpp"
 
 // models
 const char* g_Object_ship = "models//spaceship_own.obj";
@@ -38,6 +39,7 @@ const char* g_object_ship_mac = "/Users/davidherzog/Documents/XCode/Nostromo/Nos
 
 
 
+
 // window x and y size
 const unsigned int g_WindowWidth=1024;
 const unsigned int g_WindowHeight=768;
@@ -49,6 +51,7 @@ const Vector g_LocalPos = Vector( 0,0,0);
 Camera g_Camera;
 Spacecraft g_ship;
 Obstacle g_Model_obstacle;
+GameManager g_GameManager;
 
 int g_MouseButton = 0;
 int g_MouseState = 0;
@@ -58,10 +61,10 @@ int Movement_leftright = 0;
 int Movement_updown = 0;
 
 //time for movement
-int Movement_elapsedTime;
-int Movement_prevTime = 0;
 bool buttonPressed_leftRight = false;
 bool buttonPressed_upDown = false;
+int Movement_elapsedTime;
+int Movement_prevTime = 0;
 
 
 void SetupDefaultGLSettings();
@@ -70,6 +73,8 @@ void MouseCallback(int Button, int State, int x, int y);
 void MouseMoveCallback(int x, int y);
 void KeyboardCallback(unsigned char key, int x, int y);
 void KeyboardUpCallback(unsigned char key, int x, int y);
+void KeyboardArrowCallback(int key, int x, int y);
+void KeyboardArrowUpCallback(int key, int x, int y);
 
 
 int main(int argc, char * argv[]) {
@@ -85,6 +90,8 @@ int main(int argc, char * argv[]) {
 
     SetupDefaultGLSettings();
     
+    glutSpecialFunc(KeyboardArrowCallback);
+    glutSpecialUpFunc(KeyboardArrowUpCallback);
     glutDisplayFunc(DrawScene);
     glutMouseFunc(MouseCallback);
     glutKeyboardFunc(KeyboardCallback);
@@ -96,6 +103,8 @@ int main(int argc, char * argv[]) {
 
     g_ship.load(g_object_ship_mac, g_LocalPos, g_shader_mac_vertex, g_shader_mac_fragment);
 	g_ship.setCamera(&g_Camera);
+    g_GameManager.setShip(&g_ship);
+    g_GameManager.setCamera(&g_Camera);
 
 	//g_Model_obstacle.load(g_obstacle_width, g_obstacle_height, g_LocalPos);
     
@@ -158,34 +167,73 @@ void KeyboardCallback( unsigned char key, int x, int y) {
 
 
 	switch (key) {
-	case 'w':
-		Movement_updown = 1;
-		buttonPressed_upDown = true;
-		break;
-	case 'a':
-		Movement_leftright = 1;
-		buttonPressed_leftRight = true;
-		break;
-	case 's':
-		Movement_updown = -1;
-		buttonPressed_upDown = true;
-		break;
-	case 'd':
-		Movement_leftright = -1;
-		buttonPressed_leftRight = true;
-		break;
-	default:
-		break;
+        case 'w':
+            g_GameManager.setMovementUpDown(1);
+            g_GameManager.setButtonPressedUpDown(true);
+            break;
+        case 'a':
+            g_GameManager.setMovementLeftRight(1);
+            g_GameManager.setButtonPressedLeftRight(true);
+            break;
+        case 's':
+            g_GameManager.setMovementUpDown(-1);
+            g_GameManager.setButtonPressedUpDown(true);
+            break;
+        case 'd':
+            g_GameManager.setMovementLeftRight(-1);
+            g_GameManager.setButtonPressedLeftRight(true);
+            break;
+        default:
+            break;
 	}
+}
+
+void KeyboardArrowCallback(int key, int x, int y) {
+    
+    switch (key) {
+        case GLUT_KEY_UP:
+            g_GameManager.setMovementUpDown(1);
+            g_GameManager.setButtonPressedUpDown(true);
+            break;
+        case GLUT_KEY_LEFT:
+            g_GameManager.setMovementLeftRight(1);
+            g_GameManager.setButtonPressedLeftRight(true);
+            break;
+        case GLUT_KEY_DOWN:
+            g_GameManager.setMovementUpDown(-1);
+            g_GameManager.setButtonPressedUpDown(true);
+            break;
+        case GLUT_KEY_RIGHT:
+            g_GameManager.setMovementLeftRight(-1);
+            g_GameManager.setButtonPressedLeftRight(true);
+            break;
+        default:
+            break;
+    }
+    
 }
 
 void KeyboardUpCallback(unsigned char key, int x, int y) {
 
-	buttonPressed_leftRight = false;
+	/*buttonPressed_leftRight = false;
 	buttonPressed_upDown = false;
 
 	Movement_updown = 0;
-	Movement_leftright = 0;
+	Movement_leftright = 0;*/
+    
+    g_GameManager.setMovementLeftRight(0);
+    g_GameManager.setButtonPressedLeftRight(false);
+    g_GameManager.setMovementUpDown(0);
+    g_GameManager.setButtonPressedUpDown(false);
+    
+    
+}
+
+void KeyboardArrowUpCallback(int key, int x, int y) {
+    g_GameManager.setMovementLeftRight(0);
+    g_GameManager.setButtonPressedLeftRight(false);
+    g_GameManager.setMovementUpDown(0);
+    g_GameManager.setButtonPressedUpDown(false);
 }
 
 void DrawScene() {
@@ -197,23 +245,9 @@ void DrawScene() {
     GLfloat lpos[4];
     lpos[0]=g_LightPos.X; lpos[1]=g_LightPos.Y; lpos[2]=g_LightPos.Z; lpos[3]=1;
     glLightfv(GL_LIGHT0, GL_POSITION, lpos);
-
-	Movement_elapsedTime = glutGet(GLUT_ELAPSED_TIME);
-
-
-	g_Camera.apply();
-
-	g_ship.navigate(Movement_updown, Movement_leftright);
-	g_ship.update_Movement(Movement_elapsedTime - Movement_prevTime, buttonPressed_leftRight, buttonPressed_upDown);
-	g_ship.update_Camera(Movement_elapsedTime - Movement_prevTime, buttonPressed_leftRight, buttonPressed_upDown);
-
-	
-
-	Movement_prevTime = Movement_elapsedTime;
-
-	DrawGroundGrid();
-	g_ship.draw();
-	g_Model_obstacle.draw();
+    
+    g_GameManager.drawAll();
+    DrawGroundGrid();
     
     glutSwapBuffers();
     glutPostRedisplay();
