@@ -19,24 +19,21 @@ GameManager::GameManager() {
     this->paralaxSpeed = 300.0f;
 }
 
+//Zeichnet alle Objekte und prüft auf Kollisionen
 void GameManager::drawAll() {
-    this->Movement_elapsedTime = glutGet(GLUT_ELAPSED_TIME);
-    
-    this->g_Camera->apply();
-    this->g_ship->navigate(this->Movement_updown, this->Movement_leftright);
-    
-    this->g_ship->update_Movement(Movement_elapsedTime - Movement_prevTime, this->buttonPressed_leftRight, this->buttonPressed_upDown);
-    this->g_ship->update_Camera(Movement_elapsedTime - Movement_prevTime, this->buttonPressed_leftRight, this->buttonPressed_upDown);
-    this->g_terrain->parallax(Movement_elapsedTime - Movement_prevTime, this->paralaxSpeed);
-    
-    this->Movement_prevTime = Movement_elapsedTime;
-    
     this->g_terrain->draw();
     this->g_ship->draw();
 }
 
+//aktualisiert die Positionen
 void GameManager::updatePositions() {
-    
+    this->Movement_elapsedTime = glutGet(GLUT_ELAPSED_TIME);
+    this->g_Camera->apply();
+    this->g_ship->navigate(this->Movement_updown, this->Movement_leftright);
+    this->g_ship->update_Movement(Movement_elapsedTime - Movement_prevTime, this->buttonPressed_leftRight, this->buttonPressed_upDown);
+    this->g_ship->update_Camera(Movement_elapsedTime - Movement_prevTime, this->buttonPressed_leftRight, this->buttonPressed_upDown);
+    this->g_terrain->parallax(Movement_elapsedTime - Movement_prevTime, this->paralaxSpeed);
+    this->Movement_prevTime = Movement_elapsedTime;
 }
 
 Spacecraft& GameManager::getShip() {
